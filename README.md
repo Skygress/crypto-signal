@@ -1,15 +1,14 @@
 # Crypto Signal Hunter 🚀
 
-A Telegram bot that provides real-time cryptocurrency price tracking, technical analysis, and trading signals without using any external APIs.
+A Telegram bot that provides real-time cryptocurrency price tracking, technical analysis, and trading signals.
 
 ## Features
 
-✅ **Real-time Price Tracking** - Scrapes prices from multiple sources
-✅ **Technical Analysis** - RSI, Moving Averages, Bollinger Bands
+✅ **Price Tracking** - Check prices for top cryptocurrencies
 ✅ **Trading Signals** - BUY/SELL signals with confidence levels
+✅ **Technical Analysis** - RSI, Moving Averages, Bollinger Bands
 ✅ **Watchlist** - Track your favorite cryptocurrencies
-✅ **Price Alerts** - Get notified when targets are hit
-✅ **100% Telegram Compliant** - No API usage, pure web scraping
+✅ **100% Telegram Compliant** - No API usage
 
 ## Supported Cryptocurrencies
 
@@ -22,24 +21,27 @@ A Telegram bot that provides real-time cryptocurrency price tracking, technical 
 - DOT (Polkadot)
 - DOGE (Dogecoin)
 
-## Deployment
+## Deployment on Railway
 
-### Deploy on Railway
+### Step 1: Create Telegram Bot
+1. Message @BotFather on Telegram
+2. Send `/newbot`
+3. Name it **CryptoSignalHunter**
+4. Copy the token
 
-1. Fork this repository
-2. Create a new project on Railway
-3. Connect your GitHub repository
-4. Add environment variables:
-   - `BOT_TOKEN`: Your Telegram bot token from @BotFather
-5. Deploy!
+### Step 2: Deploy on Railway
+1. Create account at [railway.app](https://railway.app)
+2. Click "New Project" → "Deploy from GitHub"
+3. Connect your repository
+4. Add environment variable:
+   - Key: `BOT_TOKEN`
+   - Value: Your bot token from @BotFather
+5. Click "Deploy"
 
-### Deploy on GitHub
-
-1. Create a new repository
-2. Upload all files
-3. Deploy to Railway using the button below
-
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new)
+### Step 3: Test Your Bot
+1. Open your bot on Telegram
+2. Send `/start`
+3. Test commands
 
 ## Commands
 
@@ -48,7 +50,6 @@ A Telegram bot that provides real-time cryptocurrency price tracking, technical 
 - `/signal [symbol]` - Get trading signals
 - `/analyze [symbol]` - Get technical analysis
 - `/watchlist` - Manage watchlist
-- `/alerts` - Set price alerts
 - `/help` - Show help
 - `/about` - About the bot
 
@@ -59,7 +60,3 @@ A Telegram bot that provides real-time cryptocurrency price tracking, technical 
 ## License
 
 MIT License
-
-## Support
-
-For support or questions, contact the developer.
