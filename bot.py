@@ -672,6 +672,14 @@ def main():
         print("Please set BOT_TOKEN in Railway environment variables.")
         return
     
+    print("\n" + "="*50)
+    print("🤖 CRYPTO SIGNAL HUNTER BOT")
+    print("="*50)
+    print(f"✅ Bot is starting...")
+    print(f"✅ Supported coins: {len(CRYPTO_PAIRS)}")
+    print(f"✅ Bot token: {BOT_TOKEN[:10]}...")
+    print("="*50 + "\n")
+    
     # Create application
     application = Application.builder().token(BOT_TOKEN).build()
     
@@ -687,17 +695,6 @@ def main():
     application.add_handler(CallbackQueryHandler(button_callback))
     
     # Start bot
-    logger.info("🚀 Crypto Signal Hunter Bot is starting...")
-    logger.info(f"✅ Bot token: {BOT_TOKEN[:10]}...")
-    logger.info(f"✅ Supported coins: {len(CRYPTO_PAIRS)}")
-    print("\n" + "="*50)
-    print("🤖 CRYPTO SIGNAL HUNTER BOT")
-    print("="*50)
-    print(f"✅ Bot is running!")
-    print(f"✅ Supported coins: {', '.join(CRYPTO_PAIRS.keys())}")
-    print(f"✅ Find your bot at: https://t.me/your_bot_username")
-    print("="*50 + "\n")
-    
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == "__main__":
