@@ -5,7 +5,6 @@ import random
 from datetime import datetime
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
-import json
 
 # Configure logging
 logging.basicConfig(
@@ -55,7 +54,6 @@ user_data = {}
 def get_price(symbol):
     """Generate realistic simulated price"""
     base = BASE_PRICES.get(symbol, 100)
-    # Add random fluctuation between -5% and +5%
     change = random.uniform(-0.05, 0.05)
     price = base * (1 + change)
     return round(price, 6)
@@ -63,25 +61,6 @@ def get_price(symbol):
 def get_24h_change(symbol):
     """Generate simulated 24h change"""
     return round(random.uniform(-8, 12), 2)
-
-def get_volume(symbol):
-    """Generate simulated trading volume"""
-    base_volume = {
-        'BTC': 25000000000,
-        'ETH': 15000000000,
-        'BNB': 2000000000,
-        'SOL': 1000000000,
-        'XRP': 800000000,
-        'ADA': 500000000,
-        'DOT': 300000000,
-        'DOGE': 400000000,
-        'LINK': 200000000,
-        'MATIC': 150000000,
-        'UNI': 100000000,
-        'ATOM': 80000000
-    }
-    base = base_volume.get(symbol, 100000000)
-    return f"${base * random.uniform(0.8, 1.2):,.0f}"
 
 def generate_technical_indicators(symbol):
     """Generate simulated technical indicators"""
@@ -103,7 +82,6 @@ def generate_signal(symbol):
     price = get_price(symbol)
     indicators = generate_technical_indicators(symbol)
     
-    # Determine signal based on indicators
     signal_type = random.choice(['BUY', 'SELL', 'NEUTRAL'])
     reasons = []
     strength = 60
@@ -142,7 +120,7 @@ def generate_signal(symbol):
             reasons.append('Resistance level reached')
             strength = 65
     
-    else:  # NEUTRAL
+    else:
         reasons = ['Mixed indicators', 'Consolidation phase', 'Low volatility']
         strength = 40
     
@@ -263,21 +241,18 @@ async def price_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"❌ Symbol '{symbol}' not supported.\nSupported: {', '.join(CRYPTO_PAIRS.keys())}")
         return
     
-    # Show typing indicator
     await update.message.chat.send_action(action="typing")
     time.sleep(0.5)
     
     coin = CRYPTO_PAIRS[symbol]
     price = get_price(symbol)
     change_24h = get_24h_change(symbol)
-    volume = get_volume(symbol)
     
     response = f"""
 {coin['color']} **{coin['name']} ({symbol}) Price**
 
 💰 **Current Price:** ${price:,.6f}
 📈 **24h Change:** {change_24h:+.2f}%
-📊 **24h Volume:** {volume}
 ⏰ **Updated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
 📌 **Quick Actions:**
@@ -305,7 +280,6 @@ async def signal_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"❌ Symbol '{symbol}' not supported.\nSupported: {', '.join(CRYPTO_PAIRS.keys())}")
         return
     
-    # Show typing indicator
     await update.message.chat.send_action(action="typing")
     time.sleep(0.8)
     
@@ -376,7 +350,6 @@ async def analyze_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"❌ Symbol '{symbol}' not supported.\nSupported: {', '.join(CRYPTO_PAIRS.keys())}")
         return
     
-    # Show typing indicator
     await update.message.chat.send_action(action="typing")
     time.sleep(0.8)
     
@@ -385,7 +358,6 @@ async def analyze_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     change_24h = get_24h_change(symbol)
     indicators = generate_technical_indicators(symbol)
     
-    # Determine trend
     if indicators['ma7'] > indicators['ma25'] > indicators['ma50']:
         trend = '📈 Strong Bullish'
         trend_emoji = '🟢'
@@ -412,29 +384,23 @@ async def analyze_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 📉 MA(7): ${indicators['ma7']:,.6f}
 📉 MA(25): ${indicators['ma25']:,.6f}
 📉 MA(50): ${indicators['ma50']:,.6f}
-📊 MA Alignment: {'Bullish' if indicators['ma7'] > indicators['ma25'] else 'Bearish'}
 
 **Bollinger Bands (20,2):**
 📈 Upper: ${indicators['bollinger_upper']:,.6f}
 📊 Middle: ${indicators['bollinger_middle']:,.6f}
 📉 Lower: ${indicators['bollinger_lower']:,.6f}
-📊 Band Width: {((indicators['bollinger_upper'] - indicators['bollinger_lower']) / indicators['bollinger_middle'] * 100):.1f}%
 
 **Key Indicators:**
-📊 RSI (14): {indicators['rsi']} {'(Oversold)' if indicators['rsi'] < 30 else '(Overbought)' if indicators['rsi'] > 70 else '(Neutral)'}
+📊 RSI (14): {indicators['rsi']}
 ⚡ Volatility: {indicators['volatility']}%
 📊 Momentum: {indicators['momentum']}
 
 **Market Sentiment:**
 {trend_emoji} {trend}
-{'✅ Low Volatility - Stable' if indicators['volatility'] < 3 else '⚡ High Volatility - Risky'}
 
 💡 **Key Levels:**
 🛡️ Support: ${round(indicators['bollinger_lower'] * 0.98, 6):,.6f}
 🚀 Resistance: ${round(indicators['bollinger_upper'] * 1.02, 6):,.6f}
-
-📌 **Action:**
-{'🟢 Consider BUY if price holds support' if trend_emoji == '🟢' else '🔴 Consider SELL if price breaks support' if trend_emoji == '🔴' else '⚪ Wait for clearer direction'}
 """
     
     keyboard = [
@@ -446,13 +412,12 @@ async def analyze_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(response, reply_markup=reply_markup, parse_mode='Markdown')
 
 async def market_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle /market command - Show market overview"""
+    """Handle /market command"""
     await update.message.chat.send_action(action="typing")
     time.sleep(0.5)
     
     response = "📊 **Market Overview**\n\n"
     
-    # Show top gainers/losers
     all_symbols = list(CRYPTO_PAIRS.keys())
     market_data = []
     
@@ -465,7 +430,6 @@ async def market_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             'change': change
         })
     
-    # Sort by change
     sorted_by_change = sorted(market_data, key=lambda x: x['change'], reverse=True)
     
     response += "🏆 **Top Gainers:**\n"
@@ -492,13 +456,11 @@ async def watchlist_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /watchlist command"""
     user_id = str(update.effective_user.id)
     
-    # Initialize user data if not exists
     if user_id not in user_data:
         user_data[user_id] = {'watchlist': []}
     
     watchlist = user_data[user_id]['watchlist']
     
-    # Handle subcommands
     if context.args:
         action = context.args[0].lower()
         if action == 'add' and len(context.args) > 1:
@@ -527,12 +489,9 @@ async def watchlist_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("✅ Watchlist cleared!")
             return
     
-    # Show watchlist
     if not watchlist:
         response = """
 ⭐ **Your Watchlist is Empty**
-
-Add cryptocurrencies to your watchlist to track them easily.
 
 **How to add:**
 /watchlist add SYMBOL
@@ -540,9 +499,6 @@ Example: /watchlist add BTC
 
 **How to remove:**
 /watchlist remove SYMBOL
-
-**Supported symbols:**
-BTC, ETH, BNB, SOL, XRP, ADA, DOT, DOGE, LINK, MATIC, UNI, ATOM
 """
         await update.message.reply_text(response, parse_mode='Markdown')
         return
@@ -583,7 +539,6 @@ async def market_all_callback(update: Update, context: ContextTypes.DEFAULT_TYPE
         response += f"{coin['color']} **{symbol}**: ${price:,.6f} {emoji} {change:+.2f}%\n"
     
     response += f"\n⏰ **Updated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-    response += "\n\n💡 Use /price SYMBOL for more details"
     
     keyboard = [[InlineKeyboardButton("🔙 Back", callback_data="market_back")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -595,8 +550,6 @@ async def market_back_callback(update: Update, context: ContextTypes.DEFAULT_TYP
     query = update.callback_query
     await query.answer()
     await market_command(update, context)
-
-# ============= CALLBACK HANDLER =============
 
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle button callbacks"""
@@ -663,8 +616,6 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "about":
         await about_command(update, context)
 
-# ============= MAIN =============
-
 def main():
     """Main entry point"""
     if not BOT_TOKEN or BOT_TOKEN == 'YOUR_BOT_TOKEN_HERE':
@@ -680,10 +631,8 @@ def main():
     print(f"✅ Bot token: {BOT_TOKEN[:10]}...")
     print("="*50 + "\n")
     
-    # Create application
     application = Application.builder().token(BOT_TOKEN).build()
     
-    # Add command handlers
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("about", about_command))
@@ -694,8 +643,7 @@ def main():
     application.add_handler(CommandHandler("watchlist", watchlist_command))
     application.add_handler(CallbackQueryHandler(button_callback))
     
-    # Start bot
-    application.run_polling(allowed_updates=Update.ALL_TYPES)
+    application.run_polling()
 
 if __name__ == "__main__":
     main()
