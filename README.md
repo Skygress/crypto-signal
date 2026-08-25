@@ -7,6 +7,7 @@ A Telegram bot that provides real-time cryptocurrency price tracking, technical 
 ✅ **Price Tracking** - Check prices for top cryptocurrencies
 ✅ **Trading Signals** - BUY/SELL signals with confidence levels
 ✅ **Technical Analysis** - RSI, Moving Averages, Bollinger Bands
+✅ **Market Overview** - View all coins at a glance
 ✅ **Watchlist** - Track your favorite cryptocurrencies
 ✅ **100% Telegram Compliant** - No API usage
 
@@ -20,6 +21,10 @@ A Telegram bot that provides real-time cryptocurrency price tracking, technical 
 - ADA (Cardano)
 - DOT (Polkadot)
 - DOGE (Dogecoin)
+- LINK (Chainlink)
+- MATIC (Polygon)
+- UNI (Uniswap)
+- ATOM (Cosmos)
 
 ## Deployment on Railway
 
@@ -49,7 +54,10 @@ A Telegram bot that provides real-time cryptocurrency price tracking, technical 
 - `/price [symbol]` - Get current price
 - `/signal [symbol]` - Get trading signals
 - `/analyze [symbol]` - Get technical analysis
+- `/market` - Market overview
 - `/watchlist` - Manage watchlist
+- `/watchlist add [symbol]` - Add to watchlist
+- `/watchlist remove [symbol]` - Remove from watchlist
 - `/help` - Show help
 - `/about` - About the bot
 
