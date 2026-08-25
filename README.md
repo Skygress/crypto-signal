@@ -13,18 +13,7 @@ A Telegram bot that provides real-time cryptocurrency price tracking, technical 
 
 ## Supported Cryptocurrencies
 
-- BTC (Bitcoin)
-- ETH (Ethereum)
-- BNB (Binance Coin)
-- SOL (Solana)
-- XRP (Ripple)
-- ADA (Cardano)
-- DOT (Polkadot)
-- DOGE (Dogecoin)
-- LINK (Chainlink)
-- MATIC (Polygon)
-- UNI (Uniswap)
-- ATOM (Cosmos)
+BTC, ETH, BNB, SOL, XRP, ADA, DOT, DOGE, LINK, MATIC, UNI, ATOM
 
 ## Deployment on Railway
 
@@ -40,13 +29,11 @@ A Telegram bot that provides real-time cryptocurrency price tracking, technical 
 3. Connect your repository
 4. Add environment variable:
    - Key: `BOT_TOKEN`
-   - Value: Your bot token from @BotFather
-5. Click "Deploy"
+   - Value: Your bot token
 
 ### Step 3: Test Your Bot
 1. Open your bot on Telegram
 2. Send `/start`
-3. Test commands
 
 ## Commands
 
@@ -56,15 +43,9 @@ A Telegram bot that provides real-time cryptocurrency price tracking, technical 
 - `/analyze [symbol]` - Get technical analysis
 - `/market` - Market overview
 - `/watchlist` - Manage watchlist
-- `/watchlist add [symbol]` - Add to watchlist
-- `/watchlist remove [symbol]` - Remove from watchlist
 - `/help` - Show help
 - `/about` - About the bot
 
 ## Disclaimer
 
-⚠️ This bot is for educational purposes only. Cryptocurrency trading involves substantial risk. Always do your own research before making trading decisions.
-
-## License
-
-MIT License
+⚠️ Educational purposes only. Always DYOR.
